@@ -16,4 +16,15 @@
   :serial t
   :components ((:module "src"
                 :components ((:file "package")
-                             (:file "codegen")))))
+                             (:file "codegen"))))
+  :in-order-to ((test-op (test-op "strucpp-cpp/tests"))))
+
+(asdf:defsystem "strucpp-cpp/tests"
+  :description "FiveAM test suite: golden checks plus compile-and-run with the system C++ compiler."
+  :depends-on ("strucpp-cpp" "fiveam")
+  :serial t
+  :components ((:module "tests"
+                :components ((:file "tests"))))
+  :perform (test-op (op c)
+             (uiop:symbol-call :fiveam :run!
+                               (uiop:find-symbol* '#:strucpp-cpp :strucpp-cpp/tests))))
